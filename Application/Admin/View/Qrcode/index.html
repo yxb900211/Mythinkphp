@@ -1,0 +1,45 @@
+<include file="Public:head" />
+<link rel="stylesheet" href="__PUBLIC__/zyupload/skins/zyupload-1.0.0.min.css " type="text/css">
+<body>
+<include file="Public:top" />
+<div class="conrer">
+<include file="Public:left" />
+<!-- 页面内容 -->
+<div class="conright" >
+        <div class="qipor">
+        <blockquote class="layui-elem-quote">插件</blockquote>
+                 <div class="boytern">
+                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+<legend>Qrcode实现二维码在线生成</legend>
+</fieldset>
+<if condition="$flag eq 'true'">
+<img src="__URL__/qrcode/data/{:I('post.url')}">
+<a href="__URL__/qrcode_save/data/{:I('post.url')}" class="ajax-get">保存二维码到根目录Qrcode下</a>
+</if>
+<form class="layui-form layui-form-pane users-add-form" action="__URL__/index" method="post">
+  <div class="layui-form-item">
+    <label class="layui-form-label">url地址</label>
+    <div class="layui-input-inline">
+      <input name="url" required lay-verify="required" placeholder="请输入网址" autocomplete="off" class="layui-input" type="text">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <button class="layui-btn" type="submit" lay-filter="demo2">生 成</button>
+    <a href="__URL__/index" class="layui-btn layui-btn-primary" lay-submit="" lay-filter="demo2">取 消</a>
+  </div>
+</form> 
+
+                   
+</div>
+</div>
+</div>
+<!-- 页面内容 -->
+
+<include file="Public:foot" />
+<script type="text/javascript">
+  layui.use('form', function(){
+  var form = layui.form();
+});
+</script>
+</body>
+</html>

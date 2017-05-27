@@ -1,0 +1,76 @@
+<include file="Public:head" />
+<body>
+<include file="Public:top" />
+<div class="conrer">
+<include file="Public:left" />
+
+<div class="conright" >
+
+        <div class="qipor">
+        <blockquote class="layui-elem-quote">基础增删改查</blockquote>
+            
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+  <legend>完善用户信息</legend>
+</fieldset>
+<form class="layui-form layui-form-pane users-add-form" action="__URL__/update" method="post">
+<input type="hidden" name="id" value="{$db.id}" />
+<input type="hidden" name="__GO__" value="__URL__/index" />
+<!-- 跳转到指定地址 -->
+<div class="layui-form-item">
+    <label class="layui-form-label">选择用户</label>
+    <div class="layui-input-inline">
+      <select name="users_id" lay-filter="aihao">
+      <option value=""></option>
+      <volist name="users" id="users">
+        <option value="{$users.id}" <if condition="$db.users_id eq $users['id']">selected</if>>{$users.username}</option>
+        </volist>
+        
+      </select>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">姓 名</label>
+    <div class="layui-input-inline">
+      <input name="name" value="{$db.name}" placeholder="请输入" autocomplete="off" class="layui-input" type="text">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">性 别</label>
+    <div class="layui-input-block">
+
+      <input type="radio" name="sex" value="boy" title="男" <if condition="$db.sex eq 'boy'">checked</if>>
+      <input type="radio" name="sex" value="girl" title="女" <if condition="$db.sex eq 'girl'">checked</if>>
+    </div>
+  </div>
+
+  <div class="layui-form-item">
+    <label class="layui-form-label">生 日</label>
+    <div class="layui-input-inline">
+      <input name="birthday" value="{$db.birthday}" placeholder="请输入" autocomplete="off" class="layui-input" type="date" onclick="layui.laydate({elem: this})">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <button class="layui-btn ajax-post" target-form="users-add-form" type="submit" lay-filter="demo2">修 改</button>
+    <a href="__URL__/index" class="layui-btn layui-btn-primary" lay-submit="" lay-filter="demo2">取 消</a>
+  </div>
+</form>     
+               
+ 
+
+</div>
+</div>
+
+</div>
+
+
+<include file="Public:foot" />
+<script type="text/javascript">
+  layui.use(['form', 'layedit', 'laydate'], function(){
+  var form = layui.form()
+  ,layer = layui.layer
+  ,layedit = layui.layedit
+  ,laydate = layui.laydate;
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+@charset "utf-8";
+/* CSS Document */
+
+.hend{ width:100%; height:60px; background:#393D49; position:fixed; top:0; left:0; z-index:999;}
+
+.hend_right{ width:500px; float:right;}
+
+.conrer{ width:100%; height:auto; overflow:hidden;}
+
+.conleft{ width:200px; float:left;}
+
+.layui-nav-side { position: fixed; top: 60px; bottom: 0;left: 0; overflow-x: hidden;z-index: 999;}
+
+.conright{  padding-left:200px; margin-top:60px;}
+
+.qipor{ padding:10px;}
+
+.boytern{ height:auto; overflow:hidden;}
+
+.btomt{ float:left; height:38px; overflow:hidden; }
+
+.timb{ width:auto; float:left; line-height:38px; height:38px; margin-right:10px; padding:0 5px;}
+
+.layui-inline{ float:left;}
+
+.bomol{ width:auto; height:38px; float:left; margin-right:5px;}
+
+#demo1{ float:right;}
+
+.hend_left{ width:250px; height:60px; float:left;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

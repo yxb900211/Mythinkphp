@@ -1,0 +1,59 @@
+<include file="Public:head" />
+<link rel="stylesheet" href="__PUBLIC__/zyupload/skins/zyupload-1.0.0.min.css " type="text/css">
+<body>
+<include file="Public:top" />
+<div class="conrer">
+<include file="Public:left" />
+<!-- 页面内容 -->
+<div class="conright" >
+        <div class="qipor">
+        <blockquote class="layui-elem-quote">插件</blockquote>
+                 <div class="boytern">
+                    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 50px;">
+<legend>Tcpdf在线生成pdf</legend>
+</fieldset>
+<form class="layui-form layui-form-pane users-add-form" action="__URL__/newpdf" method="post">
+  <div class="layui-form-item">
+    <label class="layui-form-label">页数</label>
+    <div class="layui-input-inline">
+      <input name="page" required lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="number">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">页头左侧文字</label>
+    <div class="layui-input-inline">
+      <input name="left" required lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">页头右侧文字</label>
+    <div class="layui-input-inline">
+      <input name="right" required lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">内容</label>
+    <div class="layui-input-inline">
+      <input name="content" required lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input" type="text">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <button class="layui-btn" type="submit" lay-filter="demo2">生 成</button>
+    <a href="__URL__/index" class="layui-btn layui-btn-primary" lay-submit="" lay-filter="demo2">取 消</a>
+  </div>
+</form> 
+
+                   
+</div>
+</div>
+</div>
+<!-- 页面内容 -->
+
+<include file="Public:foot" />
+<script type="text/javascript">
+  layui.use('form', function(){
+  var form = layui.form();
+});
+</script>
+</body>
+</html>
