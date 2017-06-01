@@ -6,5 +6,13 @@ class ReadyController extends HomeCommonController {
 	{
 		$this->display();
 	}
+	public function funD()
+	{
+		$this->display();
+	}
+	public function funFaster()
+	{
+		$this->display();
+	}
 
 }

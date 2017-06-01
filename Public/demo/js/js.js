@@ -1,3 +1,21 @@
+$(function(){
+  layui.use('layer', function(){
+    var layer = layui.layer;
+  });
+
+});
+  /*侧边选中*/
+function set_left(url,url2){
+  var a = $('.layui-left').find('a[href="'+url+'"]');
+  if (a.length<1) {
+    a = $('.layui-left').find('a[href="'+url2+'"]');
+  }
+  if (a.parents('dd').length >= 1) {
+    a.parents('dd').addClass('layui-this');
+  }
+  a.parents('li').addClass('layui-nav-itemed');
+}
+  /*侧边选中*/
 layui.use('element', function(){
   var element = layui.element();
 });

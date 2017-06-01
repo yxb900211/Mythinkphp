@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="/Public/demo/layui/css/layui.css">
     <link rel="stylesheet" type="text/css" href="/Public/demo/css/css.css">
     <script type="text/javascript" src="/Public/demo/layui/layui.js"></script>
+    <script type="text/javascript" src="/Public/demo/js/jquery-1.10.1.min.js"></script>
     <script type="text/javascript" src="/Public/demo/js/js.js"></script>
 </head>
 <body>
@@ -13,7 +14,7 @@
 <div>
     <ul class="layui-nav">
         <li class="layui-nav-item">
-            <div class="layui-demo"><img src="img/demo.png" width="160" height="60"></div>
+            <div class="layui-demo"><img src="/Public/demo/img/logo.png" width="160" height="60"></div>
         </li>
         <li class="layui-nav-item"><a href="">开始使用</a></li>
         <li class="layui-nav-item layui-this">
@@ -41,21 +42,21 @@
 <!-- 侧边导航栏目 -->
 <div class="layui-left layui-fixed">
     <ul class="layui-nav layui-nav-tree">
-        <li class="layui-nav-item"><a href="<?php echo U('Index/index');?>">欢迎页面</a></li>
-        <li class="layui-nav-item layui-nav-itemed">
+        <li class="layui-nav-item"><a href="<?php echo U('Index/index');?>"><i class="layui-icon">&#xe63c;</i> 欢迎页面</a></li>
+        <li class="layui-nav-item">
             <a href="javascript:;">开始使用</a>
             <dl class="layui-nav-child">
-                <dd class="layui-this"><a href="<?php echo U('Ready/index');?>">准备工作</a></dd>
-                <dd><a href="javascript:;">选项2</a></dd>
-                <dd><a href="">跳转</a></dd>
+                <dd><a href="<?php echo U('Ready/index');?>"><i class="layui-icon">&#xe623;</i> 准备工作</a></dd>
+                <dd><a href="<?php echo U('Ready/funD');?>"><i class="layui-icon">&#xe623;</i> D方法介绍</a></dd>
+                <dd><a href=""><i class="layui-icon">&#xe623;</i> 跳转</a></dd>
             </dl>
         </li>
         <li class="layui-nav-item">
             <a href="javascript:;">解决方案</a>
             <dl class="layui-nav-child">
-                <dd><a href="">移动模块</a></dd>
-                <dd><a href="">后台模版</a></dd>
-                <dd><a href="">电商平台</a></dd>
+                <dd><a href=""><i class="layui-icon">&#xe623;</i> 移动模块</a></dd>
+                <dd><a href=""><i class="layui-icon">&#xe623;</i> 后台模版</a></dd>
+                <dd><a href=""><i class="layui-icon">&#xe623;</i> 电商平台</a></dd>
             </dl>
         </li>
         <li class="layui-nav-item"><a href="">产品</a></li>
@@ -107,5 +108,8 @@
 <div class="layui-foot">
     492663515@qq.com
 </div>
+<script type="text/javascript">
+	set_left("<?php echo U(CONTROLLER_NAME.'/'.ACTION_NAME);?>","<?php echo U(CONTROLLER_NAME.'/index');?>");
+</script>
 </body>
 </html>

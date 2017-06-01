@@ -10,8 +10,5 @@ class IndexController extends HomeCommonController {
 	{
 		$this->display();
 	}
-	public function return_data($data)
-	{
-		dump($data);
-	}
+
 }
