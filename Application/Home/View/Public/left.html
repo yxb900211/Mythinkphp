@@ -1,0 +1,54 @@
+<!--水平导航栏目-->
+<div>
+    <ul class="layui-nav">
+        <li class="layui-nav-item">
+            <div class="layui-demo"><img src="img/demo.png" width="160" height="60"></div>
+        </li>
+        <li class="layui-nav-item"><a href="">开始使用</a></li>
+        <li class="layui-nav-item layui-this">
+            <a href="javascript:;">产品</a>
+            <dl class="layui-nav-child">
+                <dd><a href="">选项1</a></dd>
+                <dd><a href="">选项2</a></dd>
+                <dd><a href="">选项3</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item"><a href="">大数据</a></li>
+        <li class="layui-nav-item">
+            <a href="javascript:;">解决方案</a>
+            <dl class="layui-nav-child">
+                <dd><a href="">移动模块</a></dd>
+                <dd><a href="">后台模版</a></dd>
+                <dd class="layui-this"><a href="">选中项</a></dd>
+                <dd><a href="">电商平台</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item"><a href="">社区</a></li>
+    </ul>
+</div>
+<!--水平导航栏目-->
+<!-- 侧边导航栏目 -->
+<div class="layui-left layui-fixed">
+    <ul class="layui-nav layui-nav-tree">
+        <li class="layui-nav-item"><a href="{:U('Index/index')}">欢迎页面</a></li>
+        <li class="layui-nav-item layui-nav-itemed">
+            <a href="javascript:;">开始使用</a>
+            <dl class="layui-nav-child">
+                <dd class="layui-this"><a href="{:U('Ready/index')}">准备工作</a></dd>
+                <dd><a href="{:U('Ready/funD')}">D方法</a></dd>
+                <dd><a href="">跳转</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item">
+            <a href="javascript:;">解决方案</a>
+            <dl class="layui-nav-child">
+                <dd><a href="">移动模块</a></dd>
+                <dd><a href="">后台模版</a></dd>
+                <dd><a href="">电商平台</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item"><a href="">产品</a></li>
+        <li class="layui-nav-item"><a href="">大数据</a></li>
+    </ul>
+</div>
+<!-- 侧边导航栏目 -->

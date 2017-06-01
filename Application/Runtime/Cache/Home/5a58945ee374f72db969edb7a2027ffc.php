@@ -1,0 +1,345 @@
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>demo</title>
+    <link rel="stylesheet" type="text/css" href="/Public/demo/layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="/Public/demo/css/css.css">
+    <script type="text/javascript" src="/Public/demo/layui/layui.js"></script>
+    <script type="text/javascript" src="/Public/demo/js/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="/Public/demo/js/js.js"></script>
+</head>
+<body>
+<!--水平导航栏目-->
+<div>
+    <ul class="layui-nav">
+        <li class="layui-nav-item">
+            <div class="layui-demo"><img src="img/demo.png" width="160" height="60"></div>
+        </li>
+        <li class="layui-nav-item"><a href="">开始使用</a></li>
+        <li class="layui-nav-item layui-this">
+            <a href="javascript:;">产品</a>
+            <dl class="layui-nav-child">
+                <dd><a href="">选项1</a></dd>
+                <dd><a href="">选项2</a></dd>
+                <dd><a href="">选项3</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item"><a href="">大数据</a></li>
+        <li class="layui-nav-item">
+            <a href="javascript:;">解决方案</a>
+            <dl class="layui-nav-child">
+                <dd><a href="">移动模块</a></dd>
+                <dd><a href="">后台模版</a></dd>
+                <dd class="layui-this"><a href="">选中项</a></dd>
+                <dd><a href="">电商平台</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item"><a href="">社区</a></li>
+    </ul>
+</div>
+<!--水平导航栏目-->
+<!-- 侧边导航栏目 -->
+<div class="layui-left layui-fixed">
+    <ul class="layui-nav layui-nav-tree">
+        <li class="layui-nav-item"><a href="<?php echo U('Index/index');?>">欢迎页面</a></li>
+        <li class="layui-nav-item layui-nav-itemed">
+            <a href="javascript:;">开始使用</a>
+            <dl class="layui-nav-child">
+                <dd class="layui-this"><a href="<?php echo U('Ready/index');?>">准备工作</a></dd>
+                <dd><a href="<?php echo U('Ready/funD');?>">D方法</a></dd>
+                <dd><a href="">跳转</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item">
+            <a href="javascript:;">解决方案</a>
+            <dl class="layui-nav-child">
+                <dd><a href="">移动模块</a></dd>
+                <dd><a href="">后台模版</a></dd>
+                <dd><a href="">电商平台</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item"><a href="">产品</a></li>
+        <li class="layui-nav-item"><a href="">大数据</a></li>
+    </ul>
+</div>
+<!-- 侧边导航栏目 -->
+<div class="layui-body">
+    <fieldset id="top" class="layui-elem-field">
+        <legend>D方法介绍</legend>
+        <div class="layui-field-box">
+            <blockquote class="layui-elem-quote">D方法是基于TP3.2版本改进类，可以更有效的方式去执行数据库操作</blockquote>
+	<pre class="layui-code">
+//使用方法，在控制器内引用该类
+use Think\D; //引用D类后即可使用
+    </pre>
+        </div>
+    </fieldset>
+    <fieldset id="get" class="layui-elem-field">
+        <legend>get方法</legend>
+        <div class="layui-field-box">
+            <blockquote class="layui-elem-quote">
+            通过 D::get(table[,map,sql); 方式查询，返回一个二维数组数据集</blockquote>
+	<pre class="layui-code">
+//实例
+D::get('Demo');//查询demo表内的全部数据
+D::get('Demo',1);//查询id = 1的demo表内的数据
+D::get('Demo','id>1');//查询id > 1的demo表内的数据
+/*如果需要更复杂的查询条件*/
+$where['id'] = ['gt',1]; //支持TP3.2自带的表达式查询
+D::get('Demo',[
+	'where' => $where,
+	'order' => 'create_time desc', // 按照create_time字段倒序
+	'field' => 'id,username,password', //需要的字段
+	//等等，支持所有TP3.2的连贯操作方法，但是数组形式更方便组合调用
+]);
+/*如果我想给表名增加一个别名*/
+D::get(['Demo','D'],'D.id = 1'); //这样就会生成 select from db_demo D where D.id = 1;
+/*如果我不想要返回数据集，只需要sql语句,只需要在第三个变量处设置为false即可返回sql语句*/
+D::get(['Demo','D'],'D.id = 1',false);
+/*第三参数还有一个特殊的使用方式*/
+D::get('Demo','id>1',['index' => 'id']);//这样会生成已此数据ID作为键的二维数组，可以更方便的调用，但更推荐下面的lists方法
+    </pre>
+        </div>
+    </fieldset>
+    <fieldset id="find" class="layui-elem-field">
+        <legend>find方法</legend>
+        <div class="layui-field-box">
+            <blockquote class="layui-elem-quote">
+            通过 D::find(table[,map); 方式查询，返回一个一维数组的单条数据</blockquote>
+	<pre class="layui-code">
+//实例
+/*第二参数map跟get同样，可自由组合成数组即可*/
+/*如果需要更复杂的查询条件*/
+$where['id'] = 1; //支持TP3.2自带的表达式查询
+D::find('Demo',[
+	'where' => $where,
+	'field' => 'id,username,password', //需要的字段
+	//等等，支持所有TP3.2的连贯操作方法，但是数组形式更方便组合调用
+]);
+/*如果我想给表名增加一个别名*/
+D::find(['Demo','D'],'D.id = 1'); //这样就会得到ID=1的那一条数据
+    </pre>
+        </div>
+    </fieldset>
+    <fieldset id="lists" class="layui-elem-field">
+        <legend>lists方法</legend>
+        <div class="layui-field-box">
+            <blockquote class="layui-elem-quote">
+            通过 D::lists(table,key[,map); 方式查询，返回一个关联型数组</blockquote>
+	<pre class="layui-code">
+//实例
+/*第三参数map跟get同样，可自由组合成数组即可*/
+D::list('Demo','id,username');
+/*
+这样就会返回一个
+ */
+array(
+id1 => username1,
+id2 => username2,
+id3 => username3,
+);
+的数组
+ */
+/*如果第二参数超过2个字段则会返回一个二维关联数组*/
+D::list('Demo','id,username,password');
+/*
+这样就会返回一个
+ */
+array(
+id1 => array(username1,password1),
+id2 => array(username2,password2),
+id3 => array(username3,password3),
+);
+的数组
+ */
+    </pre>
+        </div>
+    </fieldset>
+    <fieldset id="count" class="layui-elem-field">
+        <legend>count方法</legend>
+        <div class="layui-field-box">
+            <blockquote class="layui-elem-quote">
+            通过 D::count(table[,map); 方式查询，返回符合条件的数据数量</blockquote>
+	<pre class="layui-code">
+//实例
+/*第二参数map跟get同样，可自由组合成数组即可*/
+D::count('Demo','id>1');
+//用法很简单，类似get方法，返回的是数据量
+    </pre>
+        </div>
+    </fieldset>
+    <fieldset id="field" class="layui-elem-field">
+        <legend>field方法</legend>
+        <div class="layui-field-box">
+            <blockquote class="layui-elem-quote">
+            通过 D::field(table.field[,map); 查询某个表内字段的值</blockquote>
+	<pre class="layui-code">
+//实例
+/*第二参数map跟get同样，可自由组合成数组即可*/
+//有些时候我们需要快速的调取某个表内某个字段，field就可以让我们书写更效率
+D::field('Demo.username',1);
+//这样我们就取得了demo表id=1的username字段的值
+//格式为表名.字段名的方式
+/*还有一些有意思的特殊使用方法*/
+D::field('Demo.max(id)','id>1');//可以配合sql函数使用，这样就取到的id>1的所有数据中Id的最大值，是不是很方便
+    </pre>
+        </div>
+    </fieldset>
+    <fieldset id="query" class="layui-elem-field">
+        <legend>query方法</legend>
+        <div class="layui-field-box">
+            <blockquote class="layui-elem-quote">
+            通过 D::query(sql[,map); 某些时候我们需要直接使用sql查询语句查询</blockquote>
+	<pre class="layui-code">
+//实例
+/*第二参数map跟get同样，可自由组合成数组即可*/
+D::query('SELECT * FROM db_demo %WHERE%',[
+'where' => ['id' => 1],
+]);
+//与TP3.2query使用方式类似，可以直接使用完成SQL语句，也可以像上面那样替换指定方法例如%WHERE%,%FIELD%,%LIMIT%等等...
+    </pre>
+        </div>
+    </fieldset>
+    <fieldset id="add" class="layui-elem-field">
+        <legend>add方法</legend>
+        <div class="layui-field-box">
+            <blockquote class="layui-elem-quote">
+            通过 D::add(table[,data); 插入数据方法，默认插入为POST提交的数据</blockquote>
+	<pre class="layui-code">
+//实例
+/*add方法可以通过TP的Model系统验证或者自动完成*/
+D::add('Demo');
+//如果POST值就是你想插入的数据的话，直接这样插入就可以了
+
+D::add('Demo',['create_time'=>time()]);
+//这样就可以增加并非POST提交过来的值写入数据库中
+/*以上单条数据的写入方法，如果一次性写入多条数据呢？*/
+for($i = 0,$i < 10,$i++){
+	$add_data[$i] = [
+	'username' => 'username'.$i,
+	'password' => md5(123456),
+	];
+}
+D::add('Demo',$add_data);
+//没错，同时写入多条数据只需要把第二参数变更成为二维数组即可
+/*如果验证错误怎么办呢，需要错误提示文字*/
+if(!D::add('Demo')){
+	echo D::error('Demo');//D::error('Demo');可以取到错误提示信息
+}
+    </pre>
+        </div>
+    </fieldset>
+    <fieldset id="save" class="layui-elem-field">
+        <legend>save方法</legend>
+        <div class="layui-field-box">
+            <blockquote class="layui-elem-quote">
+            通过 D::save(table[,map,data); 修改数据信息</blockquote>
+	<pre class="layui-code">
+//实例
+/*第二参数map同样类似get方法的map*/
+/*如果POST提交数据有主键*/
+D::save('Demo');
+//既可以保存POST提交的数据
+/*否则*/
+D::save('Demo',1,['username' => 'username1']);
+既修改id = 1的数据信息
+    </pre>
+        </div>
+    </fieldset>
+    <fieldset id="set" class="layui-elem-field">
+        <legend>set方法</legend>
+        <div class="layui-field-box">
+            <blockquote class="layui-elem-quote">
+            通过 D::set(table.field,map,data); 来快速的修改表内某一个字段的值</blockquote>
+	<pre class="layui-code">
+//实例
+/*第二参数map同样类似get方法的map*/
+/*该方法类似于field方法，不同的为一个是查询，一个是修改*/
+D::set('Demo.username',1,'username1');
+//这样我们就可以快速的把demo表内id=1的username字段修改成username1
+    </pre>
+        </div>
+    </fieldset>
+    <fieldset id="inc" class="layui-elem-field">
+        <legend>inc方法</legend>
+        <div class="layui-field-box">
+            <blockquote class="layui-elem-quote">
+            通过 D::inc(table.field,map[,num); 来快速的递增表内某一个字段的值</blockquote>
+	<pre class="layui-code">
+//实例
+/*第二参数map同样类似get方法的map*/
+/*与set方法类似，只不过是递增数据的值*/
+D::set('Demo.create_time','id=1');
+//这样我们就可以快速的把demo表内id=1的create_time字段值+1
+/*如果需要设置一次性递增多少（默认是1）*/
+D::set('Demo.create_time','id=1',10);
+//这样就一次递增10
+    </pre>
+        </div>
+    </fieldset>
+    <fieldset id="dec" class="layui-elem-field">
+        <legend>dec方法</legend>
+        <div class="layui-field-box">
+            <blockquote class="layui-elem-quote">
+            通过 D::dec(table.field,map[,num); 来快速的递减表内某一个字段的值</blockquote>
+	<pre class="layui-code">
+//实例
+/*第二参数map同样类似get方法的map*/
+/*此方法为inc的反向方法就不做详解了*/
+    </pre>
+        </div>
+    </fieldset>
+    <fieldset id="delete" class="layui-elem-field">
+        <legend>delete方法</legend>
+        <div class="layui-field-box">
+            <blockquote class="layui-elem-quote">
+            通过 D::delete(table[,map); 删除数据</blockquote>
+	<pre class="layui-code">
+//实例
+/*第二参数map同样类似get方法的map*/
+D::delete('Demo',1);//这样就删除了id=1的这条数据。
+    </pre>
+        </div>
+    </fieldset>
+</div>
+<script type="text/html" id="index">
+		<ul class="site-dir layui-layer-wrap">
+			<li><a href="#top">D类介绍</a></li>
+			<li><a href="#get">get方法</a></li>
+			<li><a href="#find">find方法</a></li>
+			<li><a href="#lists">lists方法</a></li>
+			<li><a href="#count">count方法</a></li>
+			<li><a href="#field">field方法</a></li>
+			<li><a href="#query">query方法</a></li>
+			<li><a href="#add">add方法</a></li>
+			<li><a href="#save">save方法</a></li>
+			<li><a href="#set">set方法</a></li>
+			<li><a href="#inc">inc方法</a></li>
+			<li><a href="#dec">dec方法</a></li>
+			<li><a href="#delete">delete方法</a></li>
+		</ul>
+</script>
+<script type="text/javascript">
+	$(function(){
+		layui.use('layer', function(){
+			var layer = layui.layer
+			layer.open({
+				type: 1,
+				shade:0,
+				skin: 'index',
+				title:'目录',
+				offset: 'r',
+				area: ['180px', '280px'], //宽高
+				content: $('#index').html()
+			});
+		});
+
+
+	});
+</script>
+<div class="layui-foot">
+    492663515@qq.com
+</div>
+</body>
+</html>

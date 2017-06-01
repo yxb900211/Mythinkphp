@@ -1,0 +1,56 @@
+.layui-left {
+	top: 60px;
+    width: 200px;
+    overflow-x: hidden;
+    background-color: #393D49;
+    z-index: 10;
+    height: 100%;
+}
+.layui-fixed {
+	position: fixed;
+}
+.layui-demo {
+	width: 160px;
+	padding-right:20px;
+}
+.layui-body {
+	top: 61px;
+	left: 200px;
+	bottom: 40px;
+	padding: 10px;
+	z-index: -1;
+}
+.layui-left dd {
+	background-color: #2B2E37;
+}
+.layui-foot {
+	position: fixed;
+	bottom: 0px;
+	background-color: #2B2E37;
+	width: 100%;
+	height: 40px;
+	text-align: center;
+	color: #c2c2c2;
+	line-height: 40px;
+
+}
+.index {
+	border:solid 1px #eeeeee;
+	box-shadow:none !important;
+	margin-left: -15px !important;
+}
+ul, menu, dir {
+    display: block;
+    list-style-type: disc;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 40px;
+}
+.site-dir li {
+    line-height: 26px;
+    margin-left: 20px;
+    overflow: visible;
+    list-style-type: disc;
+}

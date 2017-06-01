@@ -6,6 +6,7 @@
     <link rel="stylesheet" type="text/css" href="/Public/demo/layui/css/layui.css">
     <link rel="stylesheet" type="text/css" href="/Public/demo/css/css.css">
     <script type="text/javascript" src="/Public/demo/layui/layui.js"></script>
+    <script type="text/javascript" src="/Public/demo/js/jquery-1.10.1.min.js"></script>
     <script type="text/javascript" src="/Public/demo/js/js.js"></script>
 </head>
 <body>
@@ -46,7 +47,7 @@
             <a href="javascript:;">开始使用</a>
             <dl class="layui-nav-child">
                 <dd class="layui-this"><a href="<?php echo U('Ready/index');?>">准备工作</a></dd>
-                <dd><a href="javascript:;">选项2</a></dd>
+                <dd><a href="<?php echo U('Ready/funD');?>">D方法</a></dd>
                 <dd><a href="">跳转</a></dd>
             </dl>
         </li>
@@ -65,45 +66,66 @@
 <!-- 侧边导航栏目 -->
 <div class="layui-body">
     <fieldset class="layui-elem-field">
-        <legend>区块标题</legend>
+        <legend>数据库</legend>
         <div class="layui-field-box">
-
-            <div class="layui-btn-group">
-                <button class="layui-btn">增加</button>
-                <button class="layui-btn">编辑</button>
-                <button class="layui-btn">删除</button>
-            </div>
-
-            <table class="layui-table">
-                <colgroup>
-                    <col width="150">
-                    <col width="200">
-                    <col>
-                </colgroup>
-                <thead>
-                <tr>
-                    <th>昵称</th>
-                    <th>加入时间</th>
-                    <th>签名</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>贤心</td>
-                    <td>2016-11-29</td>
-                    <td>人生就像是一场修行</td>
-                </tr>
-                <tr>
-                    <td>贤心</td>
-                    <td>2016-11-29</td>
-                    <td>人生就像是一场修行</td>
-                </tr>
-                </tbody>
-            </table>
-            <div id="pageDemo"></div>
+        <blockquote class="layui-elem-quote">首先我们需要建立数据表</blockquote>
+        <pre class="layui-code">
+##建立数据表
+CREATE TABLE IF NOT EXISTS `db_demo` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(32) NOT NULL,
+  `password` char(32) NOT NULL,
+  `create_time` int(11) NOT NULL,
+  `update_time` int(11) NOT NULL,
+  `status` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+        </pre>
         </div>
     </fieldset>
+    <fieldset class="layui-elem-field">
+        <legend>控制器</legend>
+        <div class="layui-field-box">
+        <blockquote class="layui-elem-quote">控制器需要设置新建一个主控制器，让其他控制器继承于该控制器</blockquote>
+        <pre class="layui-code">
+namespace Home\Controller; //注意命名空间
+use Think\Controller;
+use Think\Faster; //引用Faster类
+class HomeCommonController extends Controller {
+    /**
+     * [__call 魔术方法]
+     * @param    $function_name [方法名称]
+     * @param    $argments      [传递参数]
+     * @return   数据信息       []
+     */
+    public function __call($function_name,$argments)
+    {
+        $model = Faster::start($this->model);
+        if (method_exists($model,$function_name)) {
+            $data = call_user_func_array([$model,$function_name],[$this,$argments]);
+            switch ($data['type']) {
+                case 'return': return $data['data']; break;
+                case 'display':
+                    foreach ($data['assign'] as $key => $value) {
+                        $this->assign($key,$value);
+                    }
+                    $this->display();
+                    break;
+                case 'error': $this->error($data['msg']); break;
+                case 'success': $this->success($data['msg'],$data['url']); break;
+                case 'ajax': $this->ajaxReturn($data['assign']); break;
+            }
+        }else{
+            parent::__call($function_name,$argments);
+        }
+    }
+}
+        </pre>
+        </div>
+    </fieldset>
+
 </div>
+
 <div class="layui-foot">
     492663515@qq.com
 </div>

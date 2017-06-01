@@ -8,7 +8,7 @@ class IndexController extends HomeCommonController {
 	public $model = 'Users';
 	public function index()
 	{
-		dump(Faster::a());
+		$this->display();
 	}
 	public function return_data($data)
 	{
