@@ -54,7 +54,7 @@
             <a href="javascript:;">Faster类介绍</a>
             <dl class="layui-nav-child">
                 <dd><a href="<?php echo U('Faster/index');?>"><i class="layui-icon">&#xe623;</i> 查询数据</a></dd>
-                <dd><a href=""><i class="layui-icon">&#xe623;</i> 写入数据</a></dd>
+                <dd><a href="<?php echo U('Faster/add');?>"><i class="layui-icon">&#xe623;</i> 写入数据</a></dd>
                 <dd><a href=""><i class="layui-icon">&#xe623;</i> 修改数据</a></dd>
                 <dd><a href=""><i class="layui-icon">&#xe623;</i> 删除数据</a></dd>
             </dl>
@@ -179,9 +179,6 @@ class DemoController extends HomeCommonController {
 
 }
         </pre>
-
-
-
         </div>
     </fieldset>
    <fieldset class="layui-elem-field">
@@ -197,16 +194,16 @@ return array(
         </pre>
         </div>
     </fieldset>
-
-
-
-
-
-
-
-
-
-
+   <fieldset class="layui-elem-field">
+        <legend>关于AJAX</legend>
+        <div class="layui-field-box">
+        <blockquote class="layui-elem-quote">当然，对于现在AJAX的用途较为广泛，通过无刷新更改页面列表非常常见，这里如果是通过AJAX方法请求index方法的时候，也理所应当的获取到JSON返回值</blockquote>
+        <pre class="layui-code">
+JSON返回值如下
+{db:数据,count:总数据量,page:总分页数量,token:唯一辨识符}
+        </pre>
+        </div>
+    </fieldset>
 </div>
 
 <div class="layui-foot">

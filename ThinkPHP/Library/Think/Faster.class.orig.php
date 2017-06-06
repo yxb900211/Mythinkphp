@@ -110,18 +110,21 @@ class Faster
 				break;
 			case 'insert'://增加
 				if ($args) {
-					if (is_bool($args[0])) {
-						$config = ($args[0] == false)?self::COMPLEX_ADD:self::TRANS_START;
-					}
-					if (is_array($args[0])) {
-						$config = self::APPEND_DATA;
-					}
-					if (is_string($args[0])) {
-						$config = self::AFTER_FUNC;
-					}
-					if (is_object($args[0])) {
-						$config = self::AFTER_FUNC_OB;
-					}
+					$config = array_map(function($data){
+						if (is_bool($data)) {
+							$config = ($data == false)?self::COMPLEX_ADD:self::TRANS_START;
+						}
+						if (is_array($data)) {
+							$config = self::APPEND_DATA;
+						}
+						if (is_string($data)) {
+							$config = self::AFTER_FUNC;
+						}
+						if (is_object($data)) {
+							$config = self::AFTER_FUNC_OB;
+						}
+						return $config;
+					}, $args);
 				}
 				break;
 			case 'update'://修改
@@ -255,16 +258,16 @@ class Faster
 	 */
 	public function insert($Controller,$args)
 	{
-		$token = C('TOKEN_VALIDATE')?C('TOKEN_VALIDATE'):'on';
+		$token = C('TOKEN_VALIDATE')?C('TOKEN_VALIDATE'):'off';
 		if ($token != 'off') {
 			if (!$this->validate_token()) return ['type' => 'error','msg' => '页面已过期'];
 		}
-		$config = ($args)?$this->check_args('insert',$args):self::STATE_RETURN;
+		$config = ($args)?$this->check_args('insert',$args):[self::STATE_RETURN];
 		self::before_func($Controller,'insert');//前置方法执行
-		if ($config == 8) {D()->startTrans();}//开启事务模型
-		if ($config == 9) {
+		if (in_array(8, $config)) {D()->startTrans();}//开启事务模型
+		if (in_array(9, $config)) {
 			$add_id = D::add($this->model,array_merge(I('post.'),$args[0]));
-		}elseif ($config == 10) {
+		}elseif (in_array(10, $config)) {
 			foreach (I('post.') as $key => $value) {
 				$add_ids[] = D::add($key,$value);
 			}
@@ -272,13 +275,13 @@ class Faster
 			$add_id = D::add($this->model);
 		}
 		if ($add_id || $add_ids) {
-			if ($config === 6) { call_user_func([$Controller,$args[0]],$add_id);}
-			if ($config === 14) {$args[0]($add_id);}
-			if ($config == 8) {D()->commit();}//开启事务模型
+			if (in_array(6, $config)) { call_user_func([$Controller,$args[0]],$add_id);}
+			if (in_array(14, $config)) {$args[count($args) - 1]($add_id);}
+			if (in_array(8, $config)) {D()->commit();}//开启事务模型
 			$href_url = I('param.__GO__')?I('param.__GO__'):$_SERVER["HTTP_REFERER"];
 			return ['type' => 'success','msg' => $Controller->success['insert']?$Controller->success['insert']:'添加成功','url' => $href_url];
 		}else{
-			if ($config == 8) {D()->rollback();}//开启事务模型
+			if (in_array(8, $config)) {D()->rollback();}//开启事务模型
 			session('token',I('_token'));
 			$error = D::error($this->model);
 			return ['type' => 'error','msg' => $error?$error:'写入错误'];
@@ -309,7 +312,7 @@ class Faster
 	}
 	public function update($Controller,$args)
 	{
-		$token = C('TOKEN_VALIDATE')?C('TOKEN_VALIDATE'):'on';
+		$token = C('TOKEN_VALIDATE')?C('TOKEN_VALIDATE'):'off';
 		if ($token != 'off') {
 			if (!$this->validate_token()) return ['type' => 'error','msg' => '页面已过期'];
 		}
@@ -369,7 +372,7 @@ class Faster
 	 */
 	public function delete($Controller,$args)
 	{
-		$token = C('TOKEN_VALIDATE')?C('TOKEN_VALIDATE'):'on';
+		$token = C('TOKEN_VALIDATE')?C('TOKEN_VALIDATE'):'off';
 		if ($token != 'off') {
 			if (!$this->validate_token()) return ['type' => 'error','msg' => '页面已过期'];
 		}

@@ -48,15 +48,15 @@
             <dl class="layui-nav-child">
                 <dd><a href="<?php echo U('Ready/index');?>"><i class="layui-icon">&#xe623;</i> 准备工作</a></dd>
                 <dd><a href="<?php echo U('Ready/funD');?>"><i class="layui-icon">&#xe623;</i> D方法介绍</a></dd>
-                <dd><a href="<?php echo U('Ready/funFaster');?>"><i class="layui-icon">&#xe623;</i> Faster类介绍</a></dd>
             </dl>
         </li>
         <li class="layui-nav-item">
-            <a href="javascript:;">解决方案</a>
+            <a href="javascript:;">Faster类介绍</a>
             <dl class="layui-nav-child">
-                <dd><a href=""><i class="layui-icon">&#xe623;</i> 移动模块</a></dd>
-                <dd><a href=""><i class="layui-icon">&#xe623;</i> 后台模版</a></dd>
-                <dd><a href=""><i class="layui-icon">&#xe623;</i> 电商平台</a></dd>
+                <dd><a href="<?php echo U('Faster/index');?>"><i class="layui-icon">&#xe623;</i> 查询数据</a></dd>
+                <dd><a href=""><i class="layui-icon">&#xe623;</i> 写入数据</a></dd>
+                <dd><a href=""><i class="layui-icon">&#xe623;</i> 修改数据</a></dd>
+                <dd><a href=""><i class="layui-icon">&#xe623;</i> 删除数据</a></dd>
             </dl>
         </li>
         <li class="layui-nav-item"><a href="">产品</a></li>

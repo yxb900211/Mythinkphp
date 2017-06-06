@@ -1,18 +1,82 @@
+<?php if (!defined('THINK_PATH')) exit();?><!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>demo</title>
+    <link rel="stylesheet" type="text/css" href="/Public/demo/layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="/Public/demo/css/css.css">
+    <script type="text/javascript" src="/Public/demo/layui/layui.js"></script>
+    <script type="text/javascript" src="/Public/demo/js/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="/Public/demo/js/js.js"></script>
+</head>
+<body>
+<!--水平导航栏目-->
+<div>
+    <ul class="layui-nav">
+        <li class="layui-nav-item">
+            <div class="layui-demo"><img src="/Public/demo/img/logo.png" width="160" height="60"></div>
+        </li>
+        <li class="layui-nav-item"><a href="">开始使用</a></li>
+        <li class="layui-nav-item layui-this">
+            <a href="javascript:;">产品</a>
+            <dl class="layui-nav-child">
+                <dd><a href="">选项1</a></dd>
+                <dd><a href="">选项2</a></dd>
+                <dd><a href="">选项3</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item"><a href="">大数据</a></li>
+        <li class="layui-nav-item">
+            <a href="javascript:;">解决方案</a>
+            <dl class="layui-nav-child">
+                <dd><a href="">移动模块</a></dd>
+                <dd><a href="">后台模版</a></dd>
+                <dd class="layui-this"><a href="">选中项</a></dd>
+                <dd><a href="">电商平台</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item"><a href="">社区</a></li>
+    </ul>
+</div>
+<!--水平导航栏目-->
+<!-- 侧边导航栏目 -->
+<div class="layui-left layui-fixed">
+    <ul class="layui-nav layui-nav-tree">
+        <li class="layui-nav-item"><a href="<?php echo U('Index/index');?>">欢迎页面</a></li>
+        <li class="layui-nav-item">
+            <a href="javascript:;">开始使用</a>
+            <dl class="layui-nav-child">
+                <dd><a href="<?php echo U('Ready/index');?>"><i class="layui-icon">&#xe623;</i> 准备工作</a></dd>
+                <dd><a href="<?php echo U('Ready/funD');?>"><i class="layui-icon">&#xe623;</i> D方法介绍</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item">
+            <a href="javascript:;">Faster类介绍</a>
+            <dl class="layui-nav-child">
+                <dd><a href="<?php echo U('Faster/index');?>"><i class="layui-icon">&#xe623;</i> 查询数据</a></dd>
+                <dd><a href="<?php echo U('Faster/add');?>"><i class="layui-icon">&#xe623;</i> 写入数据</a></dd>
+                <dd><a href=""><i class="layui-icon">&#xe623;</i> 修改数据</a></dd>
+                <dd><a href=""><i class="layui-icon">&#xe623;</i> 删除数据</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item"><a href="">产品</a></li>
+        <li class="layui-nav-item"><a href="">大数据</a></li>
+    </ul>
+</div>
+<!-- 侧边导航栏目 -->
 <div class="layui-body">
     <fieldset class="layui-elem-field">
         <legend>方法设置</legend>
         <div class="layui-field-box">
-        <blockquote class="layui-elem-quote">在我们的子级控制器中，如果不定义index方法则会默认访问Faster类快速查询方法</blockquote>
+        <blockquote class="layui-elem-quote">在我们想要写入数据的时候，表单提交或者访问的形式访问内置方法 insert 即可对数据进行写入操作</blockquote>
         <pre class="layui-code">
-/*像是这样*/
-namespace Home\Controller;
-use Think\Controller;
-/**
- * 控制器需要继承于我们准备工作中准备的主控制器
- */
-class DemoController extends HomeCommonController {
-
-}
+&lt;!--例如这样--&gt;
+&lt;form action="/index.php/Home/Faster/insert" method="post"&gt;
+&lt;input name="***"/&gt;
+&lt;input name="***"/&gt;
+&lt;input type="submit"/&gt;
+&lt;/form&gt;
+&lt;!--通过提交到insert方法来执行我们的写入方法--&gt;
         </pre>
         </div>
     </fieldset>
@@ -31,19 +95,9 @@ class IndexController extends HomeCommonController {
 public $model = 'Demo';
 //或者我需要给模型名称增加一个别名
 // public $model = ['Demo','D'];
+//如果我们只需要在个别方法内改变定义模型,只需要在该方法或者前置方法中写入
+$this->model = 'Demo';
 }
-        </pre>
-        </div>
-    </fieldset>
-    <fieldset class="layui-elem-field">
-        <legend>变量获取</legend>
-        <div class="layui-field-box">
-        <blockquote class="layui-elem-quote">上述方法完成后，我们就可以在view中获取一些变量</blockquote>
-        <pre class="layui-code">
-$db; //查询出来的数据（二维数组）
-$page; //经过page类得到的分页html
-$count; //查询出的数据条数
-$token; //该页面的唯一标识符，用于重复提交验证等
         </pre>
         </div>
     </fieldset>
@@ -128,14 +182,13 @@ return array(
         </pre>
         </div>
     </fieldset>
-   <fieldset class="layui-elem-field">
-        <legend>关于AJAX</legend>
-        <div class="layui-field-box">
-        <blockquote class="layui-elem-quote">当然，对于现在AJAX的用途较为广泛，通过无刷新更改页面列表非常常见，这里如果是通过AJAX方法请求index方法的时候，也理所应当的获取到JSON返回值</blockquote>
-        <pre class="layui-code">
-JSON返回值如下
-{db:数据,count:总数据量,page:总分页数量,token:唯一辨识符}
-        </pre>
-        </div>
-    </fieldset>
 </div>
+
+<div class="layui-foot">
+    492663515@qq.com
+</div>
+<script type="text/javascript">
+	set_left("<?php echo U(CONTROLLER_NAME.'/'.ACTION_NAME);?>","<?php echo U(CONTROLLER_NAME.'/index');?>");
+</script>
+</body>
+</html>
