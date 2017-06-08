@@ -16,19 +16,19 @@ function exportExcel($expTitle="",$expCellName,$expTableData){
     $cellName = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT','AU','AV','AW','AX','AY','AZ');
     $objPHPExcel->getActiveSheet(0)->mergeCells('A1:'.$cellName[$cellNum-1].'1');//合并单元格
     for($i=0;$i<$cellNum;$i++){
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue($cellName[$i].'2', $expCellName[$i][1]); 
-    }  
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue($cellName[$i].'2', $expCellName[$i][1]);
+    }
     for($i=0;$i<$dataNum;$i++){
       for($j=0;$j<$cellNum;$j++){
         $objPHPExcel->getActiveSheet(0)->setCellValue($cellName[$j].($i+3), $expTableData[$i][$expCellName[$j][0]]);
-      }             
-    }  
+      }
+    }
     header('pragma:public');
     header('Content-type:application/vnd.ms-excel;charset=utf-8;name="'.$xlsTitle.'.xls"');
     header("Content-Disposition:attachment;filename=$fileName.xls");//attachment新窗口打印inline本窗口打印
-    $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');  
-    $objWriter->save('php://output'); 
-    exit;   
+    $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+    $objWriter->save('php://output');
+    exit;
 }
 
 /**
@@ -38,19 +38,19 @@ function exportExcel($expTitle="",$expCellName,$expTableData){
  */
 function importExcel($file){
     // 判断文件是什么格式
-    $type = pathinfo($file); 
+    $type = pathinfo($file);
     $type = strtolower($type["extension"]);
     $type=$type==='csv' ? $type : 'Excel5';
     ini_set('max_execution_time', '0');
     Vendor('PHPExcel.PHPExcel');
     // 判断使用哪种格式
     $objReader = PHPExcel_IOFactory::createReader($type);
-    $objPHPExcel = $objReader->load($file); 
-    $sheet = $objPHPExcel->getSheet(0); 
-    // 取得总行数 
-    $highestRow = $sheet->getHighestRow();     
-    // 取得总列数      
-    $highestColumn = $sheet->getHighestColumn(); 
+    $objPHPExcel = $objReader->load($file);
+    $sheet = $objPHPExcel->getSheet(0);
+    // 取得总行数
+    $highestRow = $sheet->getHighestRow();
+    // 取得总列数
+    $highestColumn = $sheet->getHighestColumn();
     //循环读取excel文件,读取一条,插入一条
     $data=array();
     //从第一行开始读取数据
@@ -59,8 +59,8 @@ function importExcel($file){
         for($k='A';$k<=$highestColumn;$k++){
             // 读取单元格
             $data[$j][]=$objPHPExcel->getActiveSheet()->getCell("$k$j")->getValue();
-        } 
-    }  
+        }
+    }
     return $data;
 }
 /**

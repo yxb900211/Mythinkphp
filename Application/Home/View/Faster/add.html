@@ -36,83 +36,115 @@ $this->model = 'Demo';
         </div>
     </fieldset>
     <fieldset class="layui-elem-field">
-        <legend>高级操作</legend>
+        <legend>增加写入数据</legend>
         <div class="layui-field-box">
-        <blockquote class="layui-elem-quote">当然，我们在实际使用当中，不可能所有的数据都无脑的去取得全部数据，会有条件、关联等操作，那么下面的操作会帮助你达成</blockquote>
+        <blockquote class="layui-elem-quote">当数据写入的时候，不可能所有想写入数据都在view通过表单提交到后台，有些我们不想让客户看到的数据一并写入，当然推荐的是通过Model来进行自动完成操作，但是我们也提供了一个快捷的方法</blockquote>
         <pre class="layui-code">
-/* 比如，我们现在需要加上一些查询条件以及表join连接 */
-class DemoController extends HomeCommonController {
-//那么我们可以在子控制器当中建立一个特殊的方法 _map
-    public function _map(&$data){
-    //这里$data前面的&符号是必须的
-        $data = [
-        'where' => ['id'=>1],
-        'order' => 'create_time desc',
-        'join'  => ['LEFT JOIN db_login L ON L.userid = db_demo.id'],
-        ];
-    }
+/*事务模型在有些地方是必不可少的，这里当然也提供了数据写入的事务*/
+public function insert()
+{
+    parent::insert([
+        'create_time' => time(),
+        'status'      => 'wait',
+    ]);
 }
-//这个$data变量其实就是前面说到的D::get()方法中的map参数，支持所有的TP3.2的连贯操作方法
-//这样我们再去view中取值就是上述条件查询出来的值了
-        </pre>
-        <pre class="layui-code">
-/* 又或者我们需要一些前置操作，比如页面还需要自己手动查询一些变量传递到view视图中 */
-class DemoController extends HomeCommonController {
-//那么我们就可以用魔术函数 _before方法
-    public function _before_index(){
-    //在这里是在index方法中之前需要执行的方法，可以进行任何操作
-    }
-}
-        </pre>
-        <pre class="layui-code">
-/* 最后，我们需要对查询出的数据做出一些处理，但是之前直接传送到页面去了。怎么办呢 */
-class DemoController extends HomeCommonController {
-//如果需要修改返回数据，那么我们就需要对父级方法进行覆盖处理了
-    public function index(){
-    //这里我们覆盖了父级的方法，页面就无法直接取到数据了，不过我们这边可以进行一些其他操作了
-    /*前置操作写完之后，我们需要调用父类方法*/
-        parent::index();//如果我们直接调用，跟上面的是一样的，那怎么才能修改数据呢？
-        /*这里我们传参有几种方法*/
-        /*第一种,传数字,这方法可以限制我们每页显示的数据量*/
-        parent::index(10);
-        /*第二种，传bool，true返回的是分页后的数据集，false则返回为分页的数据*/
-        $db = parent::index(true); //取到数据后我们可以在方法中对后续数据进行操作
-        /*第三种，传字符串，除了特殊字符串'sql' 我们将得到该方法所使用的SQL语句，主要用于测试
-        其他任意字符串都代表此控制器内任意方法名，也就是通过循环数据集的每个value传入方法进行操作
-        */
-        parent::index('after_func');
-        //通过这个方法，我们就可以通过我们下面设置的after_func方法去让数据集中的create_time字段变成日期格式
-        /*第四种，匿名函数，类似上面的方法，只不过我们将匿名函数更方便的利用此方法中的其他变量*/
-        $num = 3600;
-        parent::index(function($data)use($num){
-            $data['create_time'] = $data['create_time'] + $num;
-            return $data;
-        });
-        //这样我们就得到了让数据集中create_time字段值每个都加上了3600秒的操作
-    }
-    /**
-     * [after_func]
-     * $data 为每条对应的数据
-     */
-    public function after_func($data){
-        $data['create_time'] = date('Y-m-d',$data['create_time']);
-        return $data;
-    }
-
-}
+//首先在子控制器中新建insert覆盖父类方法，然后调用父类方法parent::insert();
+//参数类似于高级查询操作，但是略有不同的是，写入和修改是可以多项设置同时使用的
+//然后我们只需要在参数中传入一个关联型数组，就可以同时写入到数据库当中
         </pre>
         </div>
     </fieldset>
    <fieldset class="layui-elem-field">
-        <legend>关于分页</legend>
+        <legend>开启事务模型</legend>
         <div class="layui-field-box">
-        <blockquote class="layui-elem-quote">分页每页的页数是需要自定义的，需要对config中设置'PAGE_NUMBER'</blockquote>
+        <blockquote class="layui-elem-quote">开启数据库事务，当然这个在MyISAM表类型是没有什么实际意义的，所以事务请使用InnoDB类型表</blockquote>
         <pre class="layui-code">
-return array(
-  'PAGE_NUMBER' => 30,//设置每页显示30条数据。
-  'PAGE_SHOW_FUNC' => 'show',//也许我们在page类里面设置了多个输出方法，对应多个端，那么我们可以在这里定义输出用的方法，默认show。
-);
-/*这样如果特殊页面可以用C()方法去设置*/
+/*事务模型在有些地方是必不可少的，这里当然也提供了数据写入的事务*/
+public function insert()
+{
+    parent::insert(true);
+}
+//同上需要覆盖父类方法
+//如果需要开启事务，在parent::insert();的参数中传入bool值 true 来开启事务模型。
+//当然，只写入一条数据一张表的话，单独开启事务模型是没有什么意义的，所以需要配合下面方法一起使用才能看到效果
+        </pre>
+        </div>
+    </fieldset>
+   <fieldset class="layui-elem-field">
+        <legend>多表联合写入</legend>
+        <div class="layui-field-box">
+        <blockquote class="layui-elem-quote">有一种情况，我们需要在一个表单内，提交到多个数据表进行保存，下面2个情况可以满足</blockquote>
+        <pre class="layui-code">
+/*第一种，无关联的情况，当然这个情况比较少见，但是也会有出现*/
+&lt;!--html--&gt;
+&lt;form action="__URL__/insert" method="post"&gt;
+    &lt;input type="text" name="Demo[username]"&gt;
+    &lt;input type="text" name="User[realname]"&gt;
+    &lt;input type="submit"&gt;
+&lt;/form&gt;
+&lt;!--html--&gt;
+/*php控制器*/
+public function insert()
+{
+    parent::insert(false);
+}
+/*php控制器*/
+//通过传入参数false来执行多表同时写入信息，html中的表单name通过：模型名称[字段名称] 来设置，就可以分别写入到不同表单中
+//当然，他可以和事务一起使用，例如：
+public function insert()
+{
+    parent::insert(false,true);//这里参数的先后顺序是没关系的也可以(true,false);
+}
+        </pre>
+        <pre class="layui-code">
+/*第二种就是关联的写入方式了*/
+/*这里我们提供2种后置方法*/
+/*第一种*/
+public function insert()
+{
+    /*$error并不是必须的，可以($id)就可以了，error是作为报错信息的存在，&符号是必须的*/
+    parent::insert(function($id,&$error){
+        ...//这里可以根据传入的$id来进行任何操作
+    });
+}
+/*第二种*/
+public function insert()
+{
+    /*$error并不是必须的，可以($id)就可以了，error是作为报错信息的存在，&符号是必须的*/
+    parent::insert('func_name');
+}
+public function func_name($id,&$error)
+{
+    ...//这里可以根据传入的$id来进行任何操作
+}
+//第二种是通过callback方法来执行本类内置方法，通过$id来获取新增ID
+//当然我们还可以把事务个增加写入信息组合一起使用，例如：
+public function insert()
+{
+    $data = [
+        'create_time' => time(),
+        'status'      => 'wait',
+    ];
+    //设置需要同时写入主表的值
+    parent::insert(true,$data,'func_name',function($id,&$error){
+        $flag = //这里可以写入任何操作结果
+        if(!$flag){
+            $error = '后置方法写入错误';
+            return false;//当后置方法写入出现问题时，只需要return false;就会提示上面error设置的错误信息以及执行事务回滚操作，当然回滚前提是在期间的表都是InnoDB类型
+        }
+    });
+}
+public function func_name($id,&$error)
+{
+    $flag = //这里可以写入任何操作结果
+    if(!$flag){
+        $error = '后置方法写入错误';
+        return false;//当后置方法写入出现问题时，只需要return false;就会提示上面error设置的错误信息以及执行事务回滚操作，当然回滚前提是在期间的表都是InnoDB类型
+    }
+}
+
+//注意：参数顺序不是必须的，可以随意调换位置，执行顺序是开始事务->写入主表->后置方法1->后置方法2
+//2个后置方法同时使用是没有什么意义的，选择一种即可
         </pre>
         </div>
     </fieldset>

@@ -202,8 +202,8 @@ class Faster
 		}
 		$sql = ($config === 5)?false:true;
 		$data_set = D::get($this->model,$data,$sql);
-		if ($config === 6) $data_set = array_map([$Controller,$args[0]],$data_set);
-		if ($config === 14) $data_set = array_map(function($data) use($args){return $args[0]($data);},$data_set);
+		if ($config === 6) {$data_set = array_map([$Controller,$args[0]],$data_set);}
+		if ($config === 14) {$data_set = array_map(function($data) use($args){return $args[0]($data);},$data_set);}
 		if ($config != 4) {
 			$page_show = C('PAGE_SHOW_FUNC')?C('PAGE_SHOW_FUNC'):'show';
 			$show = call_user_func([$page,$page_show]);
@@ -266,7 +266,7 @@ class Faster
 		self::before_func($Controller,'insert');//前置方法执行
 		if (in_array(8, $config)) {D()->startTrans();}//开启事务模型
 		if (in_array(9, $config)) {
-			$add_id = D::add($this->model,array_merge(I('post.'),$args[0]));
+			$add_id = D::add($this->model,array_merge(I('post.'),$args[array_search(9,$config)]));
 		}elseif (in_array(10, $config)) {
 			foreach (I('post.') as $key => $value) {
 				$add_ids[] = D::add($key,$value);
@@ -275,11 +275,21 @@ class Faster
 			$add_id = D::add($this->model);
 		}
 		if ($add_id || $add_ids) {
-			if (in_array(6, $config)) { call_user_func([$Controller,$args[0]],$add_id);}
-			if (in_array(14, $config)) {$args[count($args) - 1]($add_id);}
-			if (in_array(8, $config)) {D()->commit();}//开启事务模型
-			$href_url = I('param.__GO__')?I('param.__GO__'):$_SERVER["HTTP_REFERER"];
-			return ['type' => 'success','msg' => $Controller->success['insert']?$Controller->success['insert']:'添加成功','url' => $href_url];
+			$error = '';
+			if (in_array(6, $config)) {
+				$flag6 = $Controller->$args[array_search(6,$config)]($add_id,$error);
+			}
+			if (in_array(14, $config)){ $flag14 = $args[array_search(14,$config)]($add_id,$error);}
+			if ($flag6 === false || $flag14 === false) {
+				if (in_array(8, $config)) {D()->rollback();}//开启事务模型
+				session('token',I('_token'));
+				return ['type' => 'error','msg' => $error?$error:'后置写入错误'];
+			}else{
+				if (in_array(8, $config)) {D()->commit();}//开启事务模型
+				$href_url = I('param.__GO__')?I('param.__GO__'):$_SERVER["HTTP_REFERER"];
+				return ['type' => 'success','msg' => $Controller->success['insert']?$Controller->success['insert']:'添加成功','url' => $href_url];
+			}
+
 		}else{
 			if (in_array(8, $config)) {D()->rollback();}//开启事务模型
 			session('token',I('_token'));
