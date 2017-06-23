@@ -196,7 +196,10 @@ class Faster
 		$config = ($args)?$this->check_args('index',$args):self::SHOW_VIEW;
 		if ($config != 4) {
 			$page_number = ($config != 2)?C('PAGE_NUMBER'):$args[0];
-			$count	= D::count($this->model,$data);
+			$allcount	= D::get($this->model,$data,false);
+			$count  = D::count('',[
+				'table' => $allcount.' C',
+				]);
 			$page   = self::config_page(new \Org\Util\Page($count,$page_number));
 			$data['limit'] = $page->firstRow.','.$page->listRows;
 		}
@@ -406,7 +409,6 @@ class Faster
 				session('token',I('_token'));
 				return ['type' => 'error','msg' => '删除失败'];
 			}
-
 		}
 	}
 	/**
