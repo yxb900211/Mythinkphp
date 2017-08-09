@@ -177,7 +177,7 @@ class Database{
         //数据总数
         $result = $db->query("SELECT COUNT(*) AS count FROM `{$table}`");
         $count  = $result['0']['count'];
-            
+
         //备份表数据
         if($count){
             //写入数据注释

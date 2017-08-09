@@ -24,7 +24,7 @@ class K {
     //data()方法缓存数据
     protected $parent = array();
     //
-    public function __construct($model) 
+    public function __construct($model)
     {
         $this->model = $this->check_model($model);
         //设置主模型
@@ -66,7 +66,7 @@ class K {
                     $sel[$key] = ($between[1])?array('elt',$between[1]):$sel[$key];
                 }
             }
-        } 
+        }
         $this->select_map = array_filter($sel,array($this,'delEmpty'));
         return $this;
     }
@@ -81,24 +81,24 @@ class K {
             if ($Model->getDbError()) {
                 E($model.'模型错误或模型不存在！'.L('_METHOD_NOT_EXIST_'));
             }else{
-                return $Model; 
-            }    
+                return $Model;
+            }
         }
     }
-    
+
     // public function add($model_data=array())
     // {
     //     if (I('post.')) {
     //         $form_data = I('post.');
     //     }
-    //     foreach ($this->children_model as $key => $value) {           
+    //     foreach ($this->children_model as $key => $value) {
     //         $data = $this->chickFields($value,$form_data);
     //         $user_data = is_array($this->data[$key])?$this->data[$key]:array();
     //         $model[$key] = D($value);
     //         $flag[$key] = $model[$key]->create(array_merge($data,$user_data));
     //         if (!$flag[$key]) {
     //             $this->error = $model[$key]->getError();
-    //         }     
+    //         }
     //     }
     //     $date = $this->chickFields($this->model,$form_data);
     //     $f = $this->model->create(array_merge($date,$model_data));
@@ -112,10 +112,10 @@ class K {
     //         }
     //         $this->model->create(array_merge($f,$this->chickFields($this->model,$this->parent)));
     //         $re = $this->model->add();
-    //         return $re;       
+    //         return $re;
     //     }else{
     //         return false;
-    //     }        
+    //     }
     // }
     // public function chickFields($model,$form_data="")
     // {
@@ -130,12 +130,12 @@ class K {
     //                 if (in_array($k[1],$fields)) {
     //                     $data[$k[1]] = $post;
     //                 }
-    //             }  
+    //             }
     //         }
     //     }
     //     return $data;
     // }
-  
+
     public function getError()
     {
         return $this->error;
@@ -143,14 +143,14 @@ class K {
 
     public function delEmpty($value='')
     {
-        if ($value != null || $value == '0') 
-        {  
-            return true;      
+        if ($value != null || $value == '0')
+        {
+            return true;
         }
         return false;
     }
-  
-    
+
+
 
 }
 ?>

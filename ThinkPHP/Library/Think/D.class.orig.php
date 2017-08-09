@@ -304,7 +304,7 @@ class D {
 	private function _array($array)
 	{
 		$keys   = array_keys($array);
-		$sqls = ['where','field','join','limit','order','group','table','data','having','union','distinct'];
+		$sqls = ['where','alias','field','join','limit','order','group','table','data','having','union','distinct'];
 		$fields = $this->model->getDbFields();
 		$flags = array_map(function($data) use ($sqls,$fields){
 			$return = 'fields';
