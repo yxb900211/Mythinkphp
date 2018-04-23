@@ -86,6 +86,9 @@ class D {
 			$data = $model->model->select();
 		}else if ($sql === false) {
 			$data = $model->model->select(false);
+			if (substr($data,0,1) != '(' ) {
+				$data = '('.$data.')';
+			}
 		}else if (is_string($sql)) {
 			$fields = $model->model->getDbFields();
 			if (in_array($sql, $fields)) {
